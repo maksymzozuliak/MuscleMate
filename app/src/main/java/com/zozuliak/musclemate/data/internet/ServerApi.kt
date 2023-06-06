@@ -19,12 +19,12 @@ interface ServerApi {
     @POST("/workout")
     suspend fun updateWorkout(
         @Body workout: Workout,
-    ) : Response<String?>
+    ) : Response<Boolean?>
 
     @DELETE("/workout/{id}")
     suspend fun deleteWorkoutById(
         @Path("id") id: String,
-    ) : Response<String?>
+    ) : Response<Boolean?>
 
     @GET("/workouts/{userId}")
     suspend fun getWorkoutsForUser(
