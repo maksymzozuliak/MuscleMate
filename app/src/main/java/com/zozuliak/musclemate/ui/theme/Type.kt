@@ -25,16 +25,24 @@ val geologicaFontFamily = FontFamily(
 val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = geologicaFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        fontWeight = FontWeight.Bold,
+        fontSize = 22.sp,
     ),
     titleLarge = TextStyle(
         fontFamily = geologicaFontFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 24.sp
-    )
+    ),
+    labelMedium = TextStyle(
+        fontFamily = geologicaFontFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 20.sp,
+    ),
+    titleMedium = TextStyle(
+        fontFamily = geologicaFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp
+    ),
     /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,

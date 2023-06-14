@@ -20,7 +20,10 @@ private val DarkColorScheme = darkColorScheme(
     primary = Turquoise,
     secondary = DarkTeal,
     tertiary = Color.Black,
-    background = Color.White
+    background = Color.White,
+    onBackground = Color.Black,
+    onPrimary = Color.White,
+    onSecondary = Color.White
 )
 
 private val LightColorScheme = lightColorScheme(
