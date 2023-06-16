@@ -1,5 +1,6 @@
 package com.zozuliak.musclemate.ui.theme
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.ui.res.fontResource
 import androidx.compose.ui.text.TextStyle
@@ -23,7 +24,7 @@ val geologicaFontFamily = FontFamily(
 )
 // Set of Material typography styles to start with
 val Typography = Typography(
-    bodyLarge = TextStyle(
+    labelLarge = TextStyle(
         fontFamily = geologicaFontFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 22.sp,
@@ -36,12 +37,22 @@ val Typography = Typography(
     labelMedium = TextStyle(
         fontFamily = geologicaFontFamily,
         fontWeight = FontWeight.Medium,
-        fontSize = 20.sp,
+        fontSize = 16.sp,
     ),
     titleMedium = TextStyle(
         fontFamily = geologicaFontFamily,
         fontWeight = FontWeight.Bold,
+        fontSize = 22.sp
+    ),
+    bodyLarge = TextStyle(
+        fontFamily = geologicaFontFamily,
+        fontWeight = FontWeight.Medium,
         fontSize = 20.sp
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = geologicaFontFamily,
+        fontWeight = FontWeight.Light,
+        fontSize = 20.sp,
     ),
     /* Other default text styles to override
     titleLarge = TextStyle(
