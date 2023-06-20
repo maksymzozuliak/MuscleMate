@@ -31,9 +31,12 @@ import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.chargemap.compose.numberpicker.NumberPicker
 import com.zozuliak.musclemate.R
 import com.zozuliak.musclemate.data.Exercise
 import com.zozuliak.musclemate.data.Workout
+import com.zozuliak.musclemate.presentation.main_screen.components.BottomMenu
+import com.zozuliak.musclemate.presentation.main_screen.components.DeleteDialog
 import com.zozuliak.musclemate.presentation.main_screen.components.ExerciseItem
 import com.zozuliak.musclemate.presentation.main_screen.components.ProfileButton
 import com.zozuliak.musclemate.presentation.main_screen.components.WorkoutsDropdownList
@@ -47,79 +50,112 @@ fun MainScreen(
     val exerciseList = viewModel.exerciseList.value
     val currentWorkout = viewModel.currentWorkout.value
     var expandedId by remember { mutableStateOf<String?>(null) }
+    var showDeleteExerciseDialog by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        Row(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 24.dp,
-                    end = 24.dp,
-                    top = 18.dp,
-                    bottom = 8.dp
-                ),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                modifier = Modifier
-                    .weight(1f),
-                text = "Workouts",
-                style = MaterialTheme.typography.titleLarge
-            )
-            ProfileButton(
-                modifier = Modifier
-                    .size(36.dp),
-                onClick = {},
-                color = MaterialTheme.colorScheme.onBackground
-            )
-        }
-
-        WorkoutsDropdownList(
-            modifier = Modifier
-                .padding(horizontal = 20.dp),
-            workoutList = workoutList,
-            currentWorkout = currentWorkout,
-            color = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onBackground,
-            onWorkoutSelected = {viewModel.changeCurrentWorkout(it)},
-            iconSize = 40.dp,
-            onAddPressed = {}
-        )
-
-        Text(
-            modifier = Modifier
-                .padding(start = 24.dp, top = 24.dp, bottom = 8.dp),
-            text = "${exerciseList.size} exercises",
-            style = MaterialTheme.typography.titleMedium
-        )
-
-        LazyColumn(
-            modifier = Modifier
-                .padding(horizontal = 21.dp)
                 .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
         ) {
 
-            itemsIndexed(
-                items = exerciseList,
-                key = { index, exercise ->
-                    exercise.hashCode()
-                }
-            ) {index, exercise ->
-                ExerciseItem(
-                    exercise = exercise,
-                    expandedId = expandedId,
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 24.dp,
+                        end = 24.dp,
+                        top = 18.dp,
+                        bottom = 8.dp
+                    ),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier
+                        .weight(1f),
+                    text = "Workouts",
+                    style = MaterialTheme.typography.titleLarge
+                )
+                ProfileButton(
+                    modifier = Modifier
+                        .size(36.dp),
                     onClick = {},
-                    iconSize = 32.dp,
-                    onExpandedClicked = { expandedId = if (expandedId == it) null else it },
-                    onArrowUpPressed = {viewModel.moveUp(it)},
-                    onArrowDownPressed = {viewModel.moveDown(it)},
-                    onDeletePressed = {}
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
+
+            WorkoutsDropdownList(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp),
+                workoutList = workoutList,
+                currentWorkout = currentWorkout,
+                color = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onBackground,
+                onWorkoutSelected = { viewModel.changeCurrentWorkout(it) },
+                iconSize = 40.dp,
+                onAddPressed = {}
+            )
+
+            Text(
+                modifier = Modifier
+                    .padding(start = 24.dp, top = 24.dp),
+                text = "${exerciseList.size} exercises",
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            LazyColumn(
+                modifier = Modifier
+                    .padding(
+                        start = 21.dp,
+                        end = 21.dp
+                    )
+                    .fillMaxSize()
+            ) {
+
+                itemsIndexed(
+                    items = exerciseList,
+                    key = { index, exercise ->
+                        exercise.hashCode()
+                    }
+                ) { index, exercise ->
+
+                    if (showDeleteExerciseDialog) {
+                        DeleteDialog(
+                            text = "Are you sure?",
+                            onDeletePressed = { viewModel.deleteExerciseById(exercise.id?:"") },
+                            setShowDialog = { showDeleteExerciseDialog = it }
+                        )
+                    }
+
+                    ExerciseItem(
+                        exercise = exercise,
+                        expandedId = expandedId,
+                        onClick = {},
+                        iconSize = 32.dp,
+                        onExpandedClicked = { expandedId = if (expandedId == it) null else it },
+                        onArrowUpPressed = { viewModel.moveUp(it) },
+                        onArrowDownPressed = { viewModel.moveDown(it) },
+                        onDeletePressed = {showDeleteExerciseDialog = true}
+                    )
+                }
+            }
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Transparent),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            BottomMenu(
+                isRunning = false,
+                onStartClicked = {},
+                onContinueClicked = {},
+                onStopClicked = { },
+                onAddClicked = {},
+                onEditClicked = {}
+            )
         }
     }
 }

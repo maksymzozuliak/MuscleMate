@@ -62,6 +62,8 @@ fun ExerciseItem(
     onArrowUpPressed: (Exercise) -> Unit,
     onArrowDownPressed: (Exercise) -> Unit,
     onDeletePressed: (String) -> Unit,
+    expandedIconsColor: Color = MaterialTheme.colorScheme.onSecondary,
+    backgroundColor: Color = MaterialTheme.colorScheme.secondary
 ) {
 
     val expanded = expandedId == exercise.id
@@ -75,6 +77,7 @@ fun ExerciseItem(
 
     Box(
         modifier = Modifier
+            .padding(top = if (exercise.position == 1) 6.dp else 0.dp)
             .shadow(
                 elevation = 36.dp,
                 shape = shape,
@@ -86,7 +89,7 @@ fun ExerciseItem(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.LightGray, shape),
+            .background(backgroundColor, shape),
         contentAlignment = Alignment.CenterEnd
     ) {
         if (widthState != 1f) {
@@ -104,7 +107,7 @@ fun ExerciseItem(
                             .rotate(180f),
                         painter = painterResource(id = R.drawable.expand_more),
                         contentDescription = "Up",
-                        tint = MaterialTheme.colorScheme.onBackground
+                        tint = expandedIconsColor
                     )
                 }
                 IconButton(
@@ -116,7 +119,7 @@ fun ExerciseItem(
                         modifier = Modifier,
                         painter = painterResource(id = R.drawable.expand_more),
                         contentDescription = "Down",
-                        tint = MaterialTheme.colorScheme.onBackground
+                        tint = expandedIconsColor
                     )
                 }
                 IconButton(
@@ -128,7 +131,7 @@ fun ExerciseItem(
                         modifier = Modifier,
                         imageVector = Icons.Rounded.Delete,
                         contentDescription = "Delete",
-                        tint = MaterialTheme.colorScheme.onBackground
+                        tint = Color(0xFFA54747)
                     )
                 }
             }

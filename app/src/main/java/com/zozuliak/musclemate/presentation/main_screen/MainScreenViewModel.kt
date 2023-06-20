@@ -42,7 +42,7 @@ class MainScreenViewModel @Inject constructor(
             try {
                 _workoutList.value = getWorkoutsForUser(currentUser)
                 _currentWorkout.value = _workoutList.value[0]
-                _exerciseList.value = getExercisesForWorkout(_currentWorkout.value?.id ?: "")
+                getExercisesForWorkout(_currentWorkout.value?.id ?: "")
             } catch (e: Exception) {
                 showToast("Error while loading")
             }
@@ -61,11 +61,11 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getExercisesForWorkout(workoutId: String): List<Exercise> {
+    private suspend fun getExercisesForWorkout(workoutId: String) {
 
         val response = serverRepository.getExercisesForWorkout(workoutId = workoutId)
 
-        return if (response is Resource.Success) {
+        _exerciseList.value = if (response is Resource.Success) {
             response.data ?: listOf()
         } else {
             showToast(response.message?: "Error while loading")
@@ -76,7 +76,7 @@ class MainScreenViewModel @Inject constructor(
     fun changeCurrentWorkout(workout: Workout) {
         _currentWorkout.value = workout
         viewModelScope.launch {
-            _exerciseList.value = getExercisesForWorkout(workout.id ?: "")
+            getExercisesForWorkout(workout.id ?: "")
         }
     }
 
@@ -84,7 +84,7 @@ class MainScreenViewModel @Inject constructor(
         if (exercise.position != 1) {
             viewModelScope.launch {
                 serverRepository.moveExercise(true, exercise.id ?: "")
-                _exerciseList.value = getExercisesForWorkout(_currentWorkout.value!!.id!!)
+                getExercisesForWorkout(_currentWorkout.value!!.id!!)
             }
         }
     }
@@ -93,7 +93,19 @@ class MainScreenViewModel @Inject constructor(
         if (exercise.position != _exerciseList.value.size) {
             viewModelScope.launch {
                 serverRepository.moveExercise(false, exercise.id ?: "")
-                _exerciseList.value = getExercisesForWorkout(_currentWorkout.value!!.id!!)
+                getExercisesForWorkout(_currentWorkout.value!!.id!!)
+            }
+        }
+    }
+
+    fun deleteExerciseById(id: String) {
+        viewModelScope.launch {
+            val result = serverRepository.deleteExerciseById(id)
+            if (result.data == true) {
+                showToast("Exercise deleted")
+                getExercisesForWorkout(_currentWorkout.value!!.id!!)
+            } else {
+                showToast(result.message?: "Error while deleting")
             }
         }
     }

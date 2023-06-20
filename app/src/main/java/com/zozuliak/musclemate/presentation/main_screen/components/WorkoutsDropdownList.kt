@@ -65,7 +65,7 @@ fun WorkoutsDropdownList(
     onAddPressed: () -> Unit,
     iconSize: Dp = 40.dp,
     elementHeight: Dp = 40.dp,
-    shape: RoundedCornerShape = RoundedCornerShape(20.dp)
+    shape: RoundedCornerShape = RoundedCornerShape(12.dp)
 ) {
     var expanded by remember { mutableStateOf(false) }
     val scaleState by animateFloatAsState(
@@ -144,7 +144,7 @@ fun WorkoutsDropdownList(
                         contentPadding = PaddingValues(1.dp)
                     ) {
                         Text(
-                            style = MaterialTheme.typography.labelMedium,
+                            style = MaterialTheme.typography.labelSmall,
                             text = workout.name,
                             modifier = Modifier
                                 .fillMaxWidth(),

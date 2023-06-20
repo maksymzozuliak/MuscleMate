@@ -37,7 +37,7 @@ val Typography = Typography(
     labelMedium = TextStyle(
         fontFamily = geologicaFontFamily,
         fontWeight = FontWeight.Medium,
-        fontSize = 16.sp,
+        fontSize = 18.sp,
     ),
     titleMedium = TextStyle(
         fontFamily = geologicaFontFamily,
@@ -54,6 +54,11 @@ val Typography = Typography(
         fontWeight = FontWeight.Light,
         fontSize = 20.sp,
     ),
+    labelSmall = TextStyle(
+        fontFamily = geologicaFontFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 16.sp,
+    )
     /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
