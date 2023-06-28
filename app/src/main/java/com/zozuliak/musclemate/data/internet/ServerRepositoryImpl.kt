@@ -1,6 +1,7 @@
 package com.zozuliak.musclemate.data.internet
 
 import android.util.Log
+import android.util.MalformedJsonException
 import com.zozuliak.musclemate.data.Exercise
 import com.zozuliak.musclemate.data.Workout
 import retrofit2.Response
@@ -55,12 +56,12 @@ class ServerRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addExercise(exercise: Exercise): Resource<String?> {
+    override suspend fun addExercise(exercise: Exercise): Resource<String> {
         return try {
             val response = api.addExercise(exercise = exercise)
             checkResult(response)
         } catch (e: Exception) {
-            Resource.Error(e.message ?: "Error")
+            Resource.Error(e.toString() ?: "Error")
         }
     }
 
@@ -91,6 +92,15 @@ class ServerRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getExercisesById(exerciseId: String): Resource<Exercise> {
+        return try {
+            val response: Response<Exercise> = api.getExerciseById(exerciseId = exerciseId)
+            checkResult(response)
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "Error")
+        }
+    }
+
     override suspend fun moveExercise(up: Boolean, id: String): Resource<Boolean?> {
         return try {
             val response = api.moveExercises(up = up, id = id)
@@ -99,4 +109,5 @@ class ServerRepositoryImpl @Inject constructor(
             Resource.Error(e.message ?: "Error")
         }
     }
+
 }

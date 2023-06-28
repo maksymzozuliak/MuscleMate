@@ -7,6 +7,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -17,7 +18,7 @@ interface ServerApi {
         @Body workout: Workout,
     ) : Response<String?>
 
-    @POST("/workouts")
+    @PUT("/workouts")
     suspend fun updateWorkout(
         @Body workout: Workout,
     ) : Response<Boolean?>
@@ -35,9 +36,9 @@ interface ServerApi {
     @POST("/exercises")
     suspend fun addExercise(
         @Body exercise: Exercise,
-    ) : Response<String?>
+    ) : Response<String>
 
-    @POST("/exercises")
+    @PUT("/exercises")
     suspend fun updateExercise(
         @Body exercise: Exercise,
     ) : Response<Boolean?>
@@ -58,6 +59,9 @@ interface ServerApi {
         @Query("up") up: Boolean,
     ) : Response<Boolean?>
 
-
+    @GET("/exercises/single")
+    suspend fun getExerciseById(
+        @Query("exerciseId") exerciseId: String,
+    ) : Response<Exercise>
 
 }

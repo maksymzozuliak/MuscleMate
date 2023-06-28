@@ -1,13 +1,11 @@
 package com.zozuliak.musclemate.presentation.main_screen.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -22,10 +20,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
 @Composable
-fun DeleteDialog(
-    text: String,
+fun ConfirmDialog(
     modifier : Modifier = Modifier,
-    onDeletePressed : () -> Unit,
+    text: String,
+    confirmButtonText: String,
+    onCancelPressed: () -> Unit = {},
+    cancelButtonText: String,
+    onConfirmPressed : () -> Unit,
     setShowDialog: (Boolean) -> Unit,
     backgroundColor: Color = MaterialTheme.colorScheme.background,
     backgroundShape: RoundedCornerShape = RoundedCornerShape(20.dp),
@@ -51,7 +52,9 @@ fun DeleteDialog(
                     modifier = Modifier
                         .padding(
                             top = 16.dp,
-                            bottom = 12.dp
+                            bottom = 12.dp,
+                            start = 24.dp,
+                            end = 24.dp
                         )
                 )
                 Row(
@@ -63,10 +66,13 @@ fun DeleteDialog(
                         )
                 ) {
                     TextButton(
-                        onClick = { setShowDialog(false) }
+                        onClick = {
+                            onCancelPressed()
+                            setShowDialog(false)
+                        }
                     ) {
                         Text(
-                            text = "Cancel",
+                            text = cancelButtonText,
                             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.75f),
                             style = buttonTextStyle
                         )
@@ -74,7 +80,7 @@ fun DeleteDialog(
                     Spacer(modifier = Modifier.width(20.dp))
                     TextButton(
                         onClick = {
-                            onDeletePressed()
+                            onConfirmPressed()
                             setShowDialog(false)
                                   },
                         colors = ButtonDefaults.buttonColors(
@@ -83,7 +89,7 @@ fun DeleteDialog(
                         shape = buttonShape
                     ) {
                         Text(
-                            text = "Delete",
+                            text = confirmButtonText,
                             style = buttonTextStyle
                         )
                     }

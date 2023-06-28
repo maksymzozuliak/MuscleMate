@@ -12,7 +12,6 @@ import com.zozuliak.musclemate.R
 
 
 val geologicaFontFamily = FontFamily(
-    Font(R.font.geologica_black),
     Font(R.font.geologica_bold, weight = FontWeight.Bold),
     Font(R.font.geologica_extrabold, weight = FontWeight.ExtraBold),
     Font(R.font.geologica_extralight, weight = FontWeight.ExtraLight),
@@ -41,7 +40,7 @@ val Typography = Typography(
     ),
     titleMedium = TextStyle(
         fontFamily = geologicaFontFamily,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Medium,
         fontSize = 22.sp
     ),
     bodyLarge = TextStyle(
@@ -56,9 +55,15 @@ val Typography = Typography(
     ),
     labelSmall = TextStyle(
         fontFamily = geologicaFontFamily,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
-    )
+    ),
+    bodySmall = TextStyle(
+        fontFamily = geologicaFontFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 15.sp,
+    ),
+
     /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,

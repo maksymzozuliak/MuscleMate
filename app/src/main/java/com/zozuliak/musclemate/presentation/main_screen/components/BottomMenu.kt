@@ -90,7 +90,7 @@ fun BottomMenu(
             horizontalArrangement = Arrangement.Center
         ) {
             BottomMenuIconTextButton(
-                onClick = { },
+                onClick = { onAddClicked() },
                 icon = Icons.Rounded.Add,
                 text = "Add",
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.75f),
@@ -98,7 +98,7 @@ fun BottomMenu(
             )
             Spacer(modifier = Modifier.width(100.dp))
             BottomMenuIconTextButton(
-                onClick = { },
+                onClick = { onEditClicked() },
                 icon = Icons.Rounded.Edit,
                 text = "Edit",
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.75f),

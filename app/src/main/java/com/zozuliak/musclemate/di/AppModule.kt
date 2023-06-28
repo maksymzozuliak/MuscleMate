@@ -1,5 +1,6 @@
 package com.zozuliak.musclemate.di
 
+import com.google.gson.GsonBuilder
 import com.zozuliak.musclemate.BASE_URL
 import com.zozuliak.musclemate.data.internet.ServerApi
 import com.zozuliak.musclemate.data.internet.ServerRepository
@@ -22,7 +23,7 @@ object AppModule {
     @Provides
     fun provideServerApi(): ServerApi = Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
         .build()
         .create(ServerApi::class.java)
 

@@ -6,6 +6,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -55,7 +56,7 @@ fun ExerciseItem(
     modifier: Modifier = Modifier,
     exercise: Exercise,
     expandedId: String? = null,
-    onClick: (Exercise) -> Unit,
+    onClick: () -> Unit,
     iconSize: Dp = 36.dp,
     onExpandedClicked: (String?) -> Unit,
     shape: RoundedCornerShape = RoundedCornerShape(12.dp),
@@ -63,7 +64,7 @@ fun ExerciseItem(
     onArrowDownPressed: (Exercise) -> Unit,
     onDeletePressed: (String) -> Unit,
     expandedIconsColor: Color = MaterialTheme.colorScheme.onSecondary,
-    backgroundColor: Color = MaterialTheme.colorScheme.secondary
+    backgroundColor: Color = MaterialTheme.colorScheme.primary
 ) {
 
     val expanded = expandedId == exercise.id
@@ -76,7 +77,7 @@ fun ExerciseItem(
 
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .padding(top = if (exercise.position == 1) 6.dp else 0.dp)
             .shadow(
                 elevation = 36.dp,
@@ -87,7 +88,7 @@ fun ExerciseItem(
             .height(110.dp)
     ) {
     Box(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .background(backgroundColor, shape),
         contentAlignment = Alignment.CenterEnd
@@ -131,7 +132,7 @@ fun ExerciseItem(
                         modifier = Modifier,
                         imageVector = Icons.Rounded.Delete,
                         contentDescription = "Delete",
-                        tint = Color(0xFFA54747)
+                        tint = expandedIconsColor
                     )
                 }
             }
@@ -143,6 +144,7 @@ fun ExerciseItem(
             .background(MaterialTheme.colorScheme.background, shape)
             .fillMaxHeight()
             .width((LocalConfiguration.current.screenWidthDp * widthState).dp)
+            .clickable { onClick() }
     ) {
         Row(
             modifier = Modifier

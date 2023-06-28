@@ -13,7 +13,7 @@ interface ServerRepository {
 
     suspend fun getWorkoutsForUser(userId: String) : Resource<List<Workout>>
 
-    suspend fun addExercise(exercise: Exercise) : Resource<String?>
+    suspend fun addExercise(exercise: Exercise) : Resource<String>
 
     suspend fun updateExercise(exercise: Exercise) : Resource<Boolean?>
 
@@ -21,5 +21,8 @@ interface ServerRepository {
 
     suspend fun getExercisesForWorkout(workoutId: String) : Resource<List<Exercise>>
 
+    suspend fun getExercisesById(exerciseId: String) : Resource<Exercise>
+
     suspend fun moveExercise(up: Boolean, id: String) : Resource<Boolean?>
+
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
@@ -39,25 +40,12 @@ fun ProfileButton(
         modifier = modifier
     ) {
         Icon(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(4.dp),
             imageVector = Icons.Outlined.Person,
             contentDescription = "Profile",
             tint = color
-        )
-    }
-}
-
-@Preview
-@Composable
-fun ProfileButtonPreview() {
-    Surface(
-        Modifier
-            .background(Color.White)
-            .size(600.dp)) {
-        ProfileButton(
-            modifier = Modifier,
-            onClick = {},
-            color = Color.Black
         )
     }
 }

@@ -28,6 +28,7 @@ import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -100,10 +101,11 @@ fun WorkoutsDropdownList(
         OutlinedButton(
             contentPadding = PaddingValues(3.dp),
             onClick = { expanded = !expanded },
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.background, shape),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.background
+            ),
             shape = shape,
-            border = BorderStroke(3.dp, color)
+            border = BorderStroke(2.dp, color)
         ) {
             Row(
                 modifier = Modifier
@@ -155,17 +157,15 @@ fun WorkoutsDropdownList(
                 }
             }
             Button(
-                onClick = onAddPressed,
+                onClick = {
+                    onAddPressed()
+                    expanded = false
+                          },
                 modifier = Modifier
-                    .background(
-                        color, shape.copy(
-                            topStart = CornerSize(0.dp),
-                            topEnd = CornerSize(0.dp)
-                        )
-                    )
                     .height(elementHeight)
                     .fillMaxWidth(),
-                contentPadding = PaddingValues(1.dp)
+                contentPadding = PaddingValues(1.dp),
+                shape = shape
             ){
                 Icon(
                     modifier = Modifier

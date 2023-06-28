@@ -27,8 +27,8 @@ class MainScreenViewModel @Inject constructor(
     private val _workoutList = mutableStateOf(listOf<Workout>())
     val workoutList: State<List<Workout>> = _workoutList
 
-    private val _toastState = MutableLiveData<ToastState>()
-    val toastState: LiveData<ToastState> = _toastState
+    private val _toastMessage = mutableStateOf("")
+    val toastMessage: State<String> = _toastMessage
 
     private val _currentWorkout = mutableStateOf<Workout?>(null)
     val currentWorkout: State<Workout?> = _currentWorkout
@@ -39,12 +39,81 @@ class MainScreenViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            try {
-                _workoutList.value = getWorkoutsForUser(currentUser)
-                _currentWorkout.value = _workoutList.value[0]
-                getExercisesForWorkout(_currentWorkout.value?.id ?: "")
-            } catch (e: Exception) {
-                showToast("Error while loading")
+            initScreen()
+        }
+    }
+
+    private suspend fun initScreen(last : Boolean = false) {
+        try {
+            _workoutList.value = getWorkoutsForUser(currentUser)
+            _currentWorkout.value = if(!last) _workoutList.value.first() else _workoutList.value.last()
+            getExercisesForWorkout(_currentWorkout.value?.id ?: "")
+        } catch (e: Exception) {
+            showToast("Error while loading")
+        }
+    }
+
+    fun deleteWorkout(id: String) {
+
+        viewModelScope.launch {
+
+            val response = serverRepository.deleteWorkoutById(id)
+
+            if (response is Resource.Success) {
+                if(response.data == true) {
+                    initScreen()
+                    showToast("Deleted")
+                }
+                else {
+                    showToast(response.message?: "Error while deleting")
+                }
+            } else {
+                showToast(response.message?: "Error while deleting")
+            }
+
+        }
+    }
+
+    fun createWorkout(name: String){
+
+        val workout = Workout(
+            userId = currentUser,
+            name = name
+        )
+
+        viewModelScope.launch {
+
+            val response = serverRepository.addWorkout(workout)
+
+            if (response is Resource.Success) {
+                if (response.data != null) {
+                    initScreen(last = true)
+                    showToast("Added")
+                } else {
+                    showToast(response.message ?: "Error while adding")
+                }
+            } else {
+                showToast(response.message ?: "Error while adding")
+            }
+        }
+    }
+
+    fun updateWorkout(workout: Workout){
+
+        viewModelScope.launch {
+
+            val response = serverRepository.updateWorkout(workout)
+
+            if (response is Resource.Success) {
+                if (response.data != null) {
+                    _workoutList.value = getWorkoutsForUser(currentUser)
+                    _currentWorkout.value = workout
+                    showToast("Updated")
+                } else {
+                    showToast(response.message ?: "Error while updating")
+                }
+            } else {
+                showToast(response.message ?: "Error while updating")
             }
         }
     }
@@ -61,15 +130,17 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getExercisesForWorkout(workoutId: String) {
+    fun getExercisesForWorkout(workoutId: String) {
 
-        val response = serverRepository.getExercisesForWorkout(workoutId = workoutId)
+        viewModelScope.launch {
 
-        _exerciseList.value = if (response is Resource.Success) {
-            response.data ?: listOf()
-        } else {
-            showToast(response.message?: "Error while loading")
-            listOf()
+            val response = serverRepository.getExercisesForWorkout(workoutId = workoutId)
+
+            _exerciseList.value = if (response is Resource.Success) {
+                response.data ?: listOf()
+            } else {
+                listOf()
+            }
         }
     }
 
@@ -111,9 +182,11 @@ class MainScreenViewModel @Inject constructor(
     }
 
     private fun showToast(message: String) {
-        _toastState.value = ToastState(message)
+        _toastMessage.value = message
+    }
+
+    fun onToastEnded() {
+        _toastMessage.value = ""
     }
 
 }
-
-data class ToastState(val message: String)
