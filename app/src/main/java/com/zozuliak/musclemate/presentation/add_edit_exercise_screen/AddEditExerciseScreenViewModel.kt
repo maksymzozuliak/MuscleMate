@@ -38,13 +38,14 @@ class AddEditExerciseScreenViewModel @Inject constructor(
     private val _isUnsaved = mutableStateOf(false)
     val isUnsaved: State<Boolean> = _isUnsaved
 
+    private val _personalRecord = mutableStateOf<Set?>(null)
+    val personalRecord: State<Set?> = _personalRecord
+
     private val currentExerciseId = mutableStateOf<String?>(null)
 
     private val workoutId = mutableStateOf<String>("noId")
 
     private val position = mutableStateOf(1)
-
-    private val personalRecord = mutableStateOf<Set?>(null)
 
     private val _exerciseSets = mutableStateOf(listOf<Set>())
     val exerciseSets: State<List<Set>> = _exerciseSets
@@ -59,7 +60,7 @@ class AddEditExerciseScreenViewModel @Inject constructor(
                         currentExerciseId.value = response.data.id
                         workoutId.value = response.data.workoutId
                         position.value = response.data.position
-                        personalRecord.value = response.data.personalRecord
+                        _personalRecord.value = response.data.personalRecord
                         _name.value = response.data.name
                         _group.value = response.data.group
                         _exerciseSets.value = response.data.sets?: listOf()
@@ -103,7 +104,7 @@ class AddEditExerciseScreenViewModel @Inject constructor(
                     name = _name.value,
                     sets = _exerciseSets.value,
                     group = _group.value,
-                    personalRecord = personalRecord.value,
+                    personalRecord = _personalRecord.value,
                     restTime = toSeconds(_restMinutes.value, _restSeconds.value)
                 )
                 lateinit var result : Resource<*>

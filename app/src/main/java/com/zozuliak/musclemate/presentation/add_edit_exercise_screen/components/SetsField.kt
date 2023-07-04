@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -48,6 +49,7 @@ import com.zozuliak.musclemate.presentation.add_edit_exercise_screen.toWeightStr
 fun SetsField(
     modifier: Modifier = Modifier,
     sets: List<Set>,
+    personalRecord: Set?,
     onAddClicked: () -> Unit,
     onRemovePressed: () -> Unit,
     addButtonShape: RoundedCornerShape = RoundedCornerShape(18.dp),
@@ -100,8 +102,7 @@ fun SetsField(
                     shape = shape,
                     shadowElevation = 1.dp
                 ) {
-                    Column(
-                    ) {
+                    Column {
                         Row(
                             modifier = Modifier
                                 .padding(
@@ -128,7 +129,7 @@ fun SetsField(
                         }
                         LazyColumn(
                             modifier = Modifier
-                                .padding(bottom = 8.dp)
+                                .padding(bottom = 4.dp)
                         ) {
                             itemsIndexed(sets) { index, set ->
 
@@ -162,6 +163,45 @@ fun SetsField(
                                         style = MaterialTheme.typography.bodyLarge
                                     )
                                 }
+                            }
+                        }
+
+                        if (personalRecord != null) {
+                            Divider(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 24.dp),
+                                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
+                            )
+                            Row(
+                                modifier = Modifier
+                                    .padding(
+                                        start = 12.dp,
+                                        end = 12.dp,
+                                        top = 4.dp,
+                                        bottom = 4.dp
+                                    ),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    modifier = Modifier
+                                        .size(24.dp)
+                                        .weight(2f),
+                                    painter = painterResource(id = R.drawable.personal_record_icon),
+                                    contentDescription = "Personal record"
+                                )
+                                SetText(
+                                    text = personalRecord.repetitions.toString(),
+                                    modifier = Modifier
+                                        .weight(3f),
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                                SetText(
+                                    text = personalRecord.weight.toWeightString(),
+                                    modifier = Modifier
+                                        .weight(5f),
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                             }
                         }
                     }

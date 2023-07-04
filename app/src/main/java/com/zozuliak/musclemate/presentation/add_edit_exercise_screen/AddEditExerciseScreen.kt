@@ -63,6 +63,7 @@ fun AddEditExerciseScreen(
     var showUnsavedDialog by remember { mutableStateOf(false) }
     val isUnsaved = viewModel.isUnsaved.value
     val toastMessage = viewModel.toastMessage.value
+    val personalRecord = viewModel.personalRecord.value
 
     val scrollState = rememberScrollState()
 
@@ -175,6 +176,7 @@ fun AddEditExerciseScreen(
                     bottom = 8.dp
                 ),
             sets = sets,
+            personalRecord = personalRecord,
             onAddClicked = { showSetDialog = showSetDialog.copy(show = true) },
             onRemovePressed = { viewModel.deleteLastSet() },
             onClick = { showSetDialog = showSetDialog.copy(true, it, "Save", "Change ${it+1} set")}
