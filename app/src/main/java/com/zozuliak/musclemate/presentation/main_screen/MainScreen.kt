@@ -44,6 +44,7 @@ fun MainScreen(
     val workoutList = viewModel.workoutList.value
     val exerciseList = viewModel.exerciseList.value
     val currentWorkout = viewModel.currentWorkout.value
+    val isRunning = viewModel.isRunning.value
     var expandedId by remember { mutableStateOf<String?>(null) }
     var showDeleteExerciseDialog by remember { mutableStateOf(false) }
     var showWorkoutDialog by remember { mutableStateOf(ShowWorkoutState(false)) }
@@ -162,10 +163,14 @@ fun MainScreen(
             contentAlignment = Alignment.BottomCenter
         ) {
             BottomMenu(
-                isRunning = false,
-                onStartClicked = {},
+                isRunning = isRunning,
+                onStartClicked = {
+                    viewModel.startPlayer()
+                    navController.navigate(
+                        Screen.ExercisePlayerScreen.route
+                    )},
                 onContinueClicked = {},
-                onStopClicked = { },
+                onStopClicked = { viewModel.changeIsRunning(false) },
                 onAddClicked = {
                     navController.navigate(
                         Screen.AddEditExerciseScreen.route +

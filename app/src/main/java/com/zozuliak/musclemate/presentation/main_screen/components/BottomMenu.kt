@@ -83,6 +83,26 @@ fun BottomMenu(
                     textAlign = TextAlign.Center
                 )
             }
+        } else {
+            Button(
+                modifier = Modifier
+                    .padding(
+                        top = 8.dp,
+                        start = 18.dp,
+                        end = 18.dp
+                    ),
+                onClick = { onStopClicked() },
+                shape = buttonShape,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary
+                )
+            ) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "STOP",
+                    textAlign = TextAlign.Center
+                )
+            }
         }
         Row(
             modifier = Modifier
